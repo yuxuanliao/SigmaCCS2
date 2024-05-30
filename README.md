@@ -71,7 +71,7 @@ The example code for CCS prediction is included in the [predict.ipynb](predict.i
     - *[model.pt](model/model.pt)* (the optimized model)
 
 ## Web server
-SigmaCCS2 is readily accessible via a web interface (XXXX), which supports users in predicting the CCS values of molecules directly.
+SigmaCCS2 is readily accessible via a web interface (https://huggingface.co/spaces/yuxuanliao/SigmaCCS2), which supports users in predicting the CCS values of molecules directly.
 
 ## Information of maintainers
 - 232303012@csu.edu.cn
