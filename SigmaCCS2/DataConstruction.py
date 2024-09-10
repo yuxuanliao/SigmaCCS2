@@ -171,7 +171,7 @@ def smiles2Graph(smi, All_Atoms):
         col += [end, start]
         edge_attr += 2 * [one_of_k_encoding_unk(bond.GetBondTypeAsDouble(),[1,1.5,2,3])]
         
-    x = torch.tensor(x, dtype=torch.float32)
+    x = torch.tensor(np.array(x), dtype=torch.float32)
     edge_index = torch.tensor([row, col], dtype=torch.long)
     edge_attr = torch.tensor(edge_attr, dtype=torch.float32)
     
