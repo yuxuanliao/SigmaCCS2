@@ -77,24 +77,13 @@ def SigmaCCS2_train(ifilepath, epochs, batchsize, savepath):
     adduct_one_hot = [(one_of_k_encoding_unk(adduct[_], adduct_SET)) for _ in range(len(adduct))]
     adduct_one_hot = list(np.array(adduct_one_hot).astype(int))
     
-    graph_adduct_data = load_data(smiles, adduct_one_hot, ccs, All_Atoms)
+    train_graph_adduct_data = load_data(smiles, adduct_one_hot, ccs, All_Atoms)
     
-    split_line = int(len(ccs)*0.9)
-    train_graph_adduct_data = graph_adduct_data[:split_line]
-    valid_graph_adduct_data = graph_adduct_data[split_line:]
     print('## The size of the training set : ', len(train_graph_adduct_data))
-    print('## The size of the validation set : ', len(valid_graph_adduct_data))
 
     train_loader = torch.utils.data.DataLoader(
         train_graph_adduct_data,
         shuffle=True,
-        num_workers=0,
-        batch_size=1
-    )
-
-    val_loader = torch.utils.data.DataLoader(
-        valid_graph_adduct_data,
-        shuffle=False,
         num_workers=0,
         batch_size=1
     )
@@ -141,30 +130,7 @@ def SigmaCCS2_train(ifilepath, epochs, batchsize, savepath):
                     p_bar.set_description("Training-Loss {:.2f}".format(batch_loss))
                     batch_loss = 0
         train_loss = np.mean(loss_all)
-            
-        loss_all = []
-        with torch.no_grad():
-            for data in tqdm(val_loader):
-                graph = Data(
-                    x=data['x'][0], 
-                    edge_index=data['edge_index'][0],
-                    edge_attr=data['edge_attr'][0], 
-                    y=data['y'][0]
-                ).to(device)
-    
-                line_graph = Data(
-                    x=data['lg_x'][0], 
-                    edge_index=data['lg_edge_index'][0],
-                    edge_attr=data['lg_edge_attr'][0], 
-                ).to(device)
-    
-                adduct = data['adduct'][0].to(device)
-    
-                pred = model(graph, line_graph, adduct)
-                loss = F.huber_loss(pred, graph.y)
-                loss_all.append(loss.cpu().detach().numpy())
-        val_loss = np.mean(loss_all)
         
-        print('train-loss', train_loss, 'val-loss', val_loss)
+        print('train-loss', train_loss)
         
     torch.save(model.state_dict(), savepath)
