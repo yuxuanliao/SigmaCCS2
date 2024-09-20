@@ -23,7 +23,7 @@ This is the code repo for the paper *SigmaCCS2: Collision Cross Section Predicti
   ```shell
   python -m pip install -r requirements/pip/requirements.txt
 	```
-- Or install the required packages by using the [`requirements/conda/environment.yml`](requirements/conda/environment.yml) with following commands.
+- Or install the required packages by using the [`requirements/conda/environment.yml`](requirements/conda/environment.yaml) with following commands.
   ```shell
   conda env create -f requirements/conda/environment.yaml
 	```
